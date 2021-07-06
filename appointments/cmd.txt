@@ -6,8 +6,6 @@
 
 
 
-
-
 // TDD:
 // - Wagni
 // - Always do the simplest thing to pass the test
@@ -18,7 +16,9 @@
      we're red (when the code is crashing or a test is failing). We'll first
      make sure the code is not crashing any more or we skip the test so the failing test gets ignored
      when we run the tests
-
+// - More haste, less speed. If you develop a habit of skipping refactoring, your
+     codebase will soon become difficult to work with
+//   Drying up tests is a phrase all TDDevelopers repeat often.
 
 
 
@@ -47,4 +47,5 @@
 13  npm install --save-dev @babel/preset-env @babel/preset-react
 14  npm install --save-dev @babel/plugin-transform-runtime
 15  npm install --save @babel/runtime
+
 

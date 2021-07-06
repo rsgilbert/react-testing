@@ -6,23 +6,21 @@ import { Appointment } from '../src/Appointment'
 
 // Test suite
 describe('Appointment', () => {
+    let container;
+    let customer;
     // test
     it('renders the current first name', () => {
-        const customer = { firstName: 'Ashley Jackson' }
-        const component = <Appointment customer ={customer} />
-        const container = document.createElement('section')
-        document.body.appendChild(container)
-        ReactDOM.render(component, container)
-        expect(document.body.textContent).toMatch('Ashley')
+        customer = { firstName: 'Ashley Jackson' }
+        container = document.createElement('section')
+        ReactDOM.render(<Appointment customer ={customer} />, container)
+        expect(container.textContent).toMatch('Ashley')
     })
 
-    it.skip('renders the current first name', () => {
-        const customer = { firstName: 'Mary' }
-        const component = <Appointment customer ={customer} />
-        const container = document.createElement('section')
-        document.body.appendChild(container)
-        ReactDOM.render(component, container)
-        expect(document.body.textContent).toMatch('Mary')
+    it('renders another current first name', () => {
+        customer = { firstName: 'Mary' }
+        container = document.createElement('section')
+        ReactDOM.render(<Appointment customer ={customer} />, container)
+        expect(container.textContent).toMatch('Mary')
     })
 })
 
