@@ -8,7 +8,16 @@
 
 
 
-
+// TDD:
+// - Wagni
+// - Always do the simplest thing to pass the test
+// - Only do what's required to pass the test
+// - Triangulation: The more specific our tests get, the
+//   more general our production code needs to go.
+// - We should never refactor, rework, or otherwise change course while
+     we're red (when the code is crashing or a test is failing). We'll first
+     make sure the code is not crashing any more or we skip the test so the failing test gets ignored
+     when we run the tests
 
 
 
