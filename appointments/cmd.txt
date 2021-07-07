@@ -19,6 +19,7 @@
 // - More haste, less speed. If you develop a habit of skipping refactoring, your
      codebase will soon become difficult to work with
 //   Drying up tests is a phrase all TDDevelopers repeat often.
+//   We never refactor on red
 
 
 
