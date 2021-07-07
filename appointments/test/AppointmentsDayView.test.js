@@ -11,13 +11,25 @@ import ReactTestUtils from 'react-dom/test-utils'
 // Test suite
 describe('Appointment', () => {
     let container;
+    let today = new Date()
     let customer = { firstName: 'Ashley', phoneNumber: '0701121924', stylist: 'Jonah Muwanguzi', service: 'Hair cut', notes: 'The best at kawalata'};
+    const appointment = { startsAt: today.setHours(3, 0), customer }
 
     beforeEach(() => {
         container = document.createElement('section')
     })
 
     const render = component => ReactDOM.render(component, container)
+
+    it('has a heading', () => {
+        render(<Appointment customer={customer} />)
+        expect(container.querySelector('h1')).not.toBeNull()
+    })
+
+    it('has a heading with correct time', () => {
+        render(<Appointment customer={customer} startsAt={appointment.startsAt} />)
+        expect(container.querySelector('h1').textContent).toMatch('03:00')
+    })
 
     it('renders a table', () => {
         render(<Appointment customer={customer} />)
