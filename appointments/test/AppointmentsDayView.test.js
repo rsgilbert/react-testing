@@ -11,7 +11,7 @@ import ReactTestUtils from 'react-dom/test-utils'
 // Test suite
 describe('Appointment', () => {
     let container;
-    let customer;
+    let customer = { firstName: 'Ashley'};
 
     beforeEach(() => {
         container = document.createElement('section')
@@ -19,7 +19,12 @@ describe('Appointment', () => {
 
     const render = component => ReactDOM.render(component, container)
 
-    // test
+    it('renders a table', () => {
+        render(<Appointment customer={customer} />)
+        expect(container.querySelector('table')).not.toBeNull()
+    })
+
+    
     it('renders the current first name', () => {
         // Arrange
         customer = { firstName: 'Ashley' }
@@ -34,6 +39,8 @@ describe('Appointment', () => {
         render(<Appointment customer ={customer} />)
         expect(container.textContent).toMatch('Mary')
     })
+
+    
 })
 
 describe('AppointmentsDayView', () => {

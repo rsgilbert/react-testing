@@ -5,7 +5,19 @@ const appointmentTimeOfDay = startsAt => {
     return `${h}:${m}`
 }
 
-export const Appointment = ({ customer }) => <div>{customer.firstName}</div>
+export const Appointment = ({ customer }) => {
+    return (
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        {customer.firstName}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    )
+}
 
 
 export const AppointmentsDayView = ({ appointments }) => {
