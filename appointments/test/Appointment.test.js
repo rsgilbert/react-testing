@@ -37,9 +37,16 @@ describe('Appointment', () => {
 
 describe('AppointmentsDayView', () => {
     let container;
+    const today = new Date()
+    const appointments = [
+        {startsAt: today.setHours(5, 3)},
+        {startsAt: today.setHours(18, 11)},
+        {startsAt: today.setHours(1, 0)}
+    ]
     
     beforeEach(() => {
         container = document.createElement('div')
+        
     })
 
     const render = component => 
@@ -51,15 +58,17 @@ describe('AppointmentsDayView', () => {
     })
 
     it('renders multiple appointments in an ol element', () => {
-        const today = new Date();
-        const appointments = [
-            {startsAt: today.setHours(12, 0)},
-            {startsAt: today.setHours(15, 0)},
-            {startsAt: today.setHours(1, 0)}
-        ]
         render(<AppointmentsDayView appointments={appointments} />)
         expect(container.querySelector('ol')).not.toBeNull()
         expect(container.querySelector('ol').children).toHaveLength(3)
+    })
+
+    it('renders each appointment in an li', () => {
+        render(<AppointmentsDayView appointments={appointments} />)
+        expect(container.querySelectorAll('li')).toHaveLength(3)
+        expect(container.querySelectorAll('li')[0].textContent).toEqual('05:03')
+        expect(container.querySelectorAll('li')[1].textContent).toEqual('18:11')
+        expect(container.querySelectorAll('li')[2].textContent).toEqual('01:00')
     })
 })
 
