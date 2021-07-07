@@ -7,7 +7,8 @@
     "url": "example.com"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "webpack"
   },
   "jest": {
     "testEnvironment": "jsdom"
@@ -18,7 +19,10 @@
     "@babel/plugin-transform-runtime": "^7.14.5",
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.14.5",
-    "jest": "^27.0.6"
+    "babel-loader": "^8.2.2",
+    "jest": "^27.0.6",
+    "webpack": "^5.43.0",
+    "webpack-cli": "^4.7.2"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.6"

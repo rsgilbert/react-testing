@@ -50,3 +50,5 @@
 15  npm install --save @babel/runtime
 
 
+// install webpack 
+npm install --save-dev webpack webpack-cli babel-loader
