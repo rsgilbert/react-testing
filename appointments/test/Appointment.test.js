@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Appointment } from '../src/Appointment'
+import { 
+    Appointment,
+    AppointmentsDayView
+} from '../src/Appointment'
 
 
 
@@ -17,7 +20,7 @@ describe('Appointment', () => {
 
     // test
     it('renders the current first name', () => {
-        // Arrance
+        // Arrange
         customer = { firstName: 'Ashley Jackson' }
         // Act
         render(<Appointment customer ={customer} />)
@@ -31,6 +34,36 @@ describe('Appointment', () => {
         expect(container.textContent).toMatch('Mary')
     })
 })
+
+describe('AppointmentsDayView', () => {
+    let container;
+    
+    beforeEach(() => {
+        container = document.createElement('div')
+    })
+
+    const render = component => 
+        ReactDOM.render(component, container)
+
+    it('renders a div with the right id', () => {
+        render(<AppointmentsDayView appointments={[]} />)
+        expect(container.querySelector('div#appointmentsDayView')).not.toBeNull()
+    })
+
+    it('renders multiple appointments in an ol element', () => {
+        const today = new Date();
+        const appointments = [
+            {startsAt: today.setHours(12, 0)},
+            {startsAt: today.setHours(15, 0)},
+            {startsAt: today.setHours(1, 0)}
+        ]
+        render(<AppointmentsDayView appointments={appointments} />)
+        expect(container.querySelector('ol')).not.toBeNull()
+        expect(container.querySelector('ol').children).toHaveLength(3)
+    })
+})
+
+
 
 
 
