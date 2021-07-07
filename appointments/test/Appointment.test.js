@@ -21,7 +21,7 @@ describe('Appointment', () => {
     // test
     it('renders the current first name', () => {
         // Arrange
-        customer = { firstName: 'Ashley Jackson' }
+        customer = { firstName: 'Ashley' }
         // Act
         render(<Appointment customer ={customer} />)
         // Assert
@@ -39,9 +39,16 @@ describe('AppointmentsDayView', () => {
     let container;
     const today = new Date()
     const appointments = [
-        {startsAt: today.setHours(5, 3)},
-        {startsAt: today.setHours(18, 11)},
-        {startsAt: today.setHours(1, 0)}
+        { 
+            startsAt: today.setHours(5, 3),
+            customer: { firstName: 'Ashley' }
+        }, {
+            startsAt: today.setHours(18, 11), 
+            customer: { firstName: 'Jeff' }
+        }, {
+            startsAt: today.setHours(1, 0), 
+            customer: { firstName: 'Mukasa'}
+        }
     ]
     
     beforeEach(() => {
@@ -69,6 +76,16 @@ describe('AppointmentsDayView', () => {
         expect(container.querySelectorAll('li')[0].textContent).toEqual('05:03')
         expect(container.querySelectorAll('li')[1].textContent).toEqual('18:11')
         expect(container.querySelectorAll('li')[2].textContent).toEqual('01:00')
+    })
+
+    it('shows a messsage if no appointments today', () => {
+        render(<AppointmentsDayView appointments={[]} />)
+        expect(container.textContent).toMatch('There are no appointments scheduled for today.')
+    })
+
+    it('selects the first appointment by default', () => {
+        render(<AppointmentsDayView appointments={appointments} />)
+        expect(container.textContent).toMatch('Ashley')
     })
 })
 
