@@ -11,7 +11,7 @@ import ReactTestUtils from 'react-dom/test-utils'
 // Test suite
 describe('Appointment', () => {
     let container;
-    let customer = { firstName: 'Ashley'};
+    let customer = { firstName: 'Ashley', phoneNumber: '0701121924', stylist: 'Jonah Muwanguzi', service: 'Hair cut', notes: 'The best at kawalata'};
 
     beforeEach(() => {
         container = document.createElement('section')
@@ -23,6 +23,50 @@ describe('Appointment', () => {
         render(<Appointment customer={customer} />)
         expect(container.querySelector('table')).not.toBeNull()
     })
+
+    it('renders five rows', () => {
+        render(<Appointment customer={customer} />)
+        expect(container.querySelectorAll('tr')).toHaveLength(5) 
+    })
+
+    it('renders customer details in row 1', () => {
+        render(<Appointment customer={customer} />)
+        expect(
+            container.querySelectorAll('tr')[0].textContent
+        ).toMatch('Customer')
+        expect(
+            container.querySelectorAll('tr')[0].textContent
+        ).toMatch(customer.firstName)
+    })
+
+    it('renders phone details in row 2', () => {
+        render(<Appointment customer={customer} />)
+        const row2Text = container.querySelectorAll('tr')[1].textContent
+        expect(row2Text).toMatch('Phone Number')
+        expect(row2Text).toMatch(customer.phoneNumber)
+    })
+
+    it('renders stylist details in row 3', () => {
+        render(<Appointment customer={customer} />)
+        const row3 = container.querySelectorAll('tr')[2].textContent
+        expect(row3).toMatch('Stylist')
+        expect(row3).toMatch(customer.stylist)
+    })
+
+    it('renders service details in row 4', () => {
+        render(<Appointment customer={customer} />)
+        const row4 = container.querySelectorAll('tr')[3].textContent
+        expect(row4).toMatch('Service')
+        expect(row4).toMatch(customer.service)
+    })
+
+    it('renders notes details in row 5', () => {
+        render(<Appointment customer = {customer} />)
+        const row5 = container.querySelectorAll('tr')[4].textContent
+        expect(row5).toMatch('Notes')
+        expect(row5).toMatch(customer.notes)
+    })
+ 
 
     
     it('renders the current first name', () => {
