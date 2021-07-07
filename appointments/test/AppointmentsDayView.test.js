@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { 
     Appointment,
     AppointmentsDayView
-} from '../src/Appointment'
+} from '../src/AppointmentsDayView'
 import ReactTestUtils from 'react-dom/test-utils'
 
 
