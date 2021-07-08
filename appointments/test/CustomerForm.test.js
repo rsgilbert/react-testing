@@ -100,4 +100,14 @@ describe('CustomerForm', () => {
         itSavesExistingValueWhenSubmitted('lastName')
         itSavesNewValueWhenSubmitted('lastName')
     })
+
+    describe('phone number field', () => {
+        itRendersAsATextBox('phoneNumber')
+        itIncludesTheExistingValue('phoneNumber')
+        itRendersALabel('phoneNumber', 'Phone Number')
+        itAssignsIdMatchingLabelId('phoneNumber')
+        itSavesExistingValueWhenSubmitted('phoneNumber')
+        itSavesNewValueWhenSubmitted('phoneNumber')
+        
+    })
 })
