@@ -107,7 +107,25 @@ describe('CustomerForm', () => {
         itRendersALabel('phoneNumber', 'Phone Number')
         itAssignsIdMatchingLabelId('phoneNumber')
         itSavesExistingValueWhenSubmitted('phoneNumber')
-        itSavesNewValueWhenSubmitted('phoneNumber')
-        
+        itSavesNewValueWhenSubmitted('phoneNumber') 
+    })
+
+    it('has a submit button', () => {
+        render(<CustomerForm />)
+        const submitButton = container.querySelector('input[type="submit"]')
+        expect(submitButton).not.toBeNull()
+    })
+
+    it('saves first name when submit button is clicked', () => {
+        expect.hasAssertions()
+        render(<CustomerForm
+                    firstName='value'
+                    onSubmit={(q)=> {
+                            expect(q).not.toBeNull()
+                            expect(q.firstName).toEqual('value')
+                        }}
+                    />)
+        const submitButton = container.querySelector('input[type="submit"]')
+        ReactTestUtils.Simulate.click(submitButton)
     })
 })
