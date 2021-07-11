@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 export const CustomerForm = ({
   firstName,
   lastName,
-  phoneNumber,
-  fetch
+  phoneNumber
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
@@ -65,5 +64,4 @@ export const CustomerForm = ({
 };
 
 CustomerForm.defaultProps = {
-  fetch: async () => {}
 }

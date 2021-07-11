@@ -37,9 +37,19 @@ expect.extend({
 describe('CustomerForm', () => {
   let render, container;
 
+  const originalFetch = window.fetch;
+  let fetchSpy;
+
   beforeEach(() => {
     ({ render, container } = createContainer());
+    fetchSpy = spy()
+    window.fetch = fetchSpy.fn
   });
+
+  afterEach(() => {
+    // Reset global variables
+    window.fetch = originalFetch
+  })
 
   const form = id => container.querySelector(`form[id="${id}"]`);
   const field = name => form('customer').elements[name];
@@ -62,10 +72,7 @@ describe('CustomerForm', () => {
 
   // Stubbing the fetch API
   it('calls fetch with the right properties when submitting data', async () => {
-    const fetchSpy = spy()
-    render(<CustomerForm
-            fetch={fetchSpy.fn}
-            />)
+    render(<CustomerForm />)
     ReactTestUtils.Simulate.submit(form('customer'))
     expect(fetchSpy).toHaveBeenCalled()
     expect(fetchSpy.receivedArgument(0)).toEqual('/customers')
@@ -111,16 +118,13 @@ describe('CustomerForm', () => {
 
   const itSubmitsExistingValue = (fieldName, value) =>
     it('submits existing value', async () => {
-      let fetchSpy = spy()
       render(
         <CustomerForm
           {...{ [fieldName]: value }}
-          fetch={fetchSpy.fn}
         />
       );
       await ReactTestUtils.Simulate.submit(form('customer'));
       
-      // expect(submitArg[fieldName]).toEqual(value)
       expect(fetchSpy).toHaveBeenCalled()
       expect(fetchSpy.receivedArgument(0)).toBe('/customers')
       const fetchOptions = fetchSpy.receivedArgument(1)
@@ -132,11 +136,9 @@ describe('CustomerForm', () => {
 
   const itSubmitsNewValue = (fieldName, value) =>
     it('saves new value when submitted', async () => {
-      let fetchSpy = spy()
       render(
         <CustomerForm
           {...{ [fieldName]: 'existingValue' }}
-          fetch={ fetchSpy.fn }
         />
       );
       await ReactTestUtils.Simulate.change(field(fieldName), {
