@@ -3,16 +3,29 @@ import ReactTestUtils from 'react-dom/test-utils';
 import { createContainer } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
 
-
+/**
+ * A spy function with the ability to stub. A stub
+ * always returns the save value whenever its called
+ */
 const spy = () => {
   let receivedArguments
+  let returnValue
   return {
     // Uses parameter destructuring to save an entire array of parameters
     /**
      * Copies the arguments in the function and saves them as receivedArguments
      * @param  {...any} args 
      */
-    fn: (...args) => (receivedArguments = args),
+    fn: (...args) => {
+      receivedArguments = args
+      return returnValue
+    },
+    
+    /**
+     * Sets the value to return when fn is called
+     */
+    stubReturnValue: value => (returnValue = value),
+
     /**
      * Produces an array of all arguments that were obtained by fn
      */
