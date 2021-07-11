@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 export const CustomerForm = ({
   firstName,
   lastName,
-  phoneNumber
+  phoneNumber,
+  onSave
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
@@ -17,13 +18,18 @@ export const CustomerForm = ({
       [target.name]: target.value
     }));
 
-    const handleSubmit = () => {
-      fetch('/customers', { 
+    const handleSubmit = async event => {
+      event.preventDefault()
+      const result = await window.fetch('/customers', { 
         method: 'POST', 
         credentials: 'same-origin', 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(customer)
       })
+      if(result.ok) {
+        const customerWithId = await result.json()
+        onSave(customerWithId)
+      }
     }
 
   return (
@@ -64,4 +70,5 @@ export const CustomerForm = ({
 };
 
 CustomerForm.defaultProps = {
+  onSave: () => {}
 }

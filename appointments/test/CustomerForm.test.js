@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTestUtils from 'react-dom/test-utils';
+import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
 
@@ -20,7 +20,7 @@ const spy = () => {
       receivedArguments = args
       return returnValue
     },
-    
+
     /**
      * Sets the value to return when fn is called
      */
@@ -38,7 +38,31 @@ const spy = () => {
   }
 }
 
+/**
+ * Test helper function that produces a Response object (that is a Promise) to mimic what
+ * would be returned from the fetch API.
+ * @param {*} body 
+ */
+const fetchResponseOk = body => 
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(body)
+  })
+
+  /**
+   * Test helper function that produces an error Response object that is also a promise
+   */
+const fetchResponseError = () => 
+  Promise.resolve({ ok: false })
+
+/**
+ * Extension functions on expect 
+ */  
 expect.extend({
+  /**
+   * Passes if the spy's fn function was called which is also when the spy has arguments
+   * @param {*} received 
+   */
   toHaveBeenCalled(received) {
     if(received.receivedArguments() === undefined) {
       return { pass: false, message: () => 'Spy was not called' }
@@ -57,6 +81,7 @@ describe('CustomerForm', () => {
     ({ render, container } = createContainer());
     fetchSpy = spy()
     window.fetch = fetchSpy.fn
+    fetchSpy.stubReturnValue(fetchResponseOk({}))
   });
 
   afterEach(() => {
@@ -82,7 +107,6 @@ describe('CustomerForm', () => {
     expect(submitButton).not.toBeNull();
   });
 
-
   // Stubbing the fetch API
   it('calls fetch with the right properties when submitting data', async () => {
     render(<CustomerForm />)
@@ -96,7 +120,41 @@ describe('CustomerForm', () => {
     expect(fetchOpts.headers).toEqual({ 'Content-Type': 'application/json' })
   })
 
+  it('notifies onSave after form is submitted', async () => {
+    const customer = { id: 123 }
+    fetchSpy.stubReturnValue(fetchResponseOk(customer))
+    const onSaveSpy = spy()
+    render(<CustomerForm onSave={onSaveSpy.fn} />)
+    await act(async () => 
+      ReactTestUtils.Simulate.submit(form('customer')))
+    expect(fetchSpy).toHaveBeenCalled()
+    expect(onSaveSpy).toHaveBeenCalled()
+    expect(onSaveSpy.receivedArgument(0)).toEqual(customer)
+  })
 
+  it('doesnt notify onSave if we get an error response when form is submitted', async () => {
+    fetchSpy.stubReturnValue(fetchResponseError())
+    const onSaveSpy = spy()
+    render(<CustomerForm onSave={onSaveSpy.fn} />)
+    await act(async () => 
+      ReactTestUtils.Simulate.submit(form('customer')))
+    expect(fetchSpy).toHaveBeenCalled()
+    expect(onSaveSpy).not.toHaveBeenCalled()
+  })
+
+  it('prevents the default action when submitting the form', async () => {
+    const preventDefaultSpy = spy()
+    render(<CustomerForm />)
+    await act(async () => 
+      ReactTestUtils.Simulate.submit(form('customer'), { preventDefault: preventDefaultSpy.fn })
+    )
+    expect(preventDefaultSpy).toHaveBeenCalled()
+  })
+
+ 
+
+
+  // -- assertion helpers --
 
   const expectToBeInputFieldOfTypeText = formElement => {
     expect(formElement).not.toBeNull();
