@@ -11,6 +11,7 @@ export const CustomerForm = ({
     lastName,
     phoneNumber
   });
+  const [error, setError] = useState(false)
 
   const handleChange = ({ target }) =>
     setCustomer(customer => ({
@@ -29,6 +30,8 @@ export const CustomerForm = ({
       if(result.ok) {
         const customerWithId = await result.json()
         onSave(customerWithId)
+      } else {
+        setError(true)
       }
     }
 
@@ -37,6 +40,7 @@ export const CustomerForm = ({
       id="customer" 
       onSubmit={handleSubmit}
     >
+      { error ? <Error /> : null }
       <label htmlFor="firstName">First name</label>
       <input
         type="text"
@@ -69,6 +73,13 @@ export const CustomerForm = ({
   );
 };
 
+
+const Error = () => {
+
+  return (
+    <div className="error">An error occured while submitting the form</div>
+  )
+}
 CustomerForm.defaultProps = {
   onSave: () => {}
 }
