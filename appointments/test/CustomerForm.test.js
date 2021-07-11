@@ -2,23 +2,13 @@ import React from 'react';
 import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { createContainer } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
+import { 
+  fetchResponseOk,
+  fetchResponseError, 
+  requestBodyOf
+} from './spyHelpers'
 
-/**
- * Test helper function that produces a Response object (that is a Promise) to mimic what
- * would be returned from the fetch API.
- * @param {*} body 
- */
-const fetchResponseOk = body => 
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve(body)
-  })
 
-  /**
-   * Test helper function that produces an error Response object that is also a promise
-   */
-const fetchResponseError = () => 
-  Promise.resolve({ ok: false })
 
 /**
  * Extension functions on expect 
@@ -116,7 +106,6 @@ describe('CustomerForm', () => {
   })
  
 
-
   // -- assertion helpers --
 
   const expectToBeInputFieldOfTypeText = formElement => {
@@ -165,8 +154,7 @@ describe('CustomerForm', () => {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' }
       }))
-      const fetchRequestBody = fetchSpy.mock.calls[0][1].body
-      expect(JSON.parse(fetchRequestBody)[fieldName]).toEqual(value)
+      expect(requestBodyOf(fetchSpy)).toMatchObject({ [fieldName]: value })
     });
 
   const itSubmitsNewValue = (fieldName, value) =>
@@ -186,8 +174,7 @@ describe('CustomerForm', () => {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' }
       }))
-      const fetchRequestBody = fetchSpy.mock.calls[0][1]['body']
-      expect(JSON.parse(fetchRequestBody)[fieldName]).toEqual(value)
+      expect(requestBodyOf(fetchSpy)[fieldName]).toEqual(value)
     });
 
   describe('first name field', () => {
