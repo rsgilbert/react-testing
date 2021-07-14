@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {FormError} from "./FormError";
 
 export const CustomerForm = ({
   firstName,
@@ -21,6 +22,7 @@ export const CustomerForm = ({
 
     const handleSubmit = async event => {
       event.preventDefault()
+      setError(false)
       const result = await window.fetch('/customers', { 
         method: 'POST', 
         credentials: 'same-origin', 
@@ -40,7 +42,7 @@ export const CustomerForm = ({
       id="customer" 
       onSubmit={handleSubmit}
     >
-      { error ? <Error /> : null }
+      { error ? <FormError /> : null }
       <label htmlFor="firstName">First name</label>
       <input
         type="text"
@@ -74,12 +76,7 @@ export const CustomerForm = ({
 };
 
 
-const Error = () => {
 
-  return (
-    <div className="error">An error occured while submitting the form</div>
-  )
-}
 CustomerForm.defaultProps = {
   onSave: () => {}
 }

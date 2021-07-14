@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import {FormError} from "./FormError";
 
 const timeIncrements = (numTimes, startTime, increment) =>
   Array(numTimes)
@@ -111,7 +112,6 @@ export const AppointmentForm = ({
   selectableStylists,
   stylist,
   serviceStylists,
-  onSubmit,
   salonOpensAt,
   salonClosesAt,
   today,
@@ -123,6 +123,7 @@ export const AppointmentForm = ({
     startsAt,
     stylist
   });
+  const [error, setError] = useState(false)
 
   const handleSelectBoxChange = ({ target: { value, name } }) =>
     setAppointment(appointment => ({
@@ -149,8 +150,19 @@ export const AppointmentForm = ({
       )
     : availableTimeSlots;
 
+  const handleSubmit = async e => {
+    const result = await window.fetch('/appointments', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(appointment)
+    })
+    setError(!result.ok)
+  }
+
   return (
-    <form id="appointment" onSubmit={() => onSubmit(appointment)}>
+    <form id="appointment" onSubmit={handleSubmit}>
+      { error ? <FormError /> : null }
       <label htmlFor="service">Salon service</label>
       <select
         name="service"
@@ -187,7 +199,7 @@ export const AppointmentForm = ({
       <input type="submit" value="Add" />
     </form>
   );
-};
+}
 
 AppointmentForm.defaultProps = {
   availableTimeSlots: [],

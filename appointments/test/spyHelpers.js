@@ -17,6 +17,15 @@ export const fetchResponseError = () =>
 
 
 /**
- * Produces the request body that will be used in the call to fetch
+ * Produces the request body that will be used in the call to fetch.
+ * 0 means first call, 1 means first parameter which is the init parameter in window.fetch
  */
-export const requestBodyOf = fetchSpy => JSON.parse(fetchSpy.mock.calls[0][1]['body'])
+export const requestBodyOf = fetchSpy => {
+    const jsonStr = fetchSpy.mock.calls[0][1]['body']
+    try {
+        return JSON.parse(jsonStr)
+    } catch (err) {
+        console.error(`Parsing json string ${jsonStr} failed with err ${err}`)
+        throw err
+    }
+}
