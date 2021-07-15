@@ -30,7 +30,10 @@ export const createContainer = () => {
     change: simulateEvent('change'),
     submit: simulateEventAndWait('submit'),
     simulateEventAndWait,
+    // Uses synchronous form of act. Pg 147
+    // Calls all useEffect hooks after rendering component
     render: component => ReactDOM.render(component, container),
+    renderAndWait: async component => await act(async () => ReactDOM.render(component, container)),
     container,
     form,
     field,
