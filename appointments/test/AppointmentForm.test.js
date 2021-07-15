@@ -70,6 +70,16 @@ describe('AppointmentForm', () => {
     expect(errorEl).toBeNull()
   })
 
+  it('passes the customer id to fetch when submitting', async() => {
+    const customer = { id: 123 }
+    render(<AppointmentForm customer={customer} />)
+    await submit(form('appointment'))
+    expect(window.fetch).toHaveBeenCalled()
+    expect(requestBodyOf(window.fetch)).toMatchObject({
+      customer: customer.id
+    })
+  })
+
 
   const itRendersAsASelectBox = fieldName => {
     it('renders as a select box', () => {

@@ -116,7 +116,7 @@ export const AppointmentForm = ({
   salonClosesAt,
   today,
   availableTimeSlots,
-  startsAt
+  startsAt, customer
 }) => {
   const [appointment, setAppointment] = useState({
     service,
@@ -155,7 +155,7 @@ export const AppointmentForm = ({
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(appointment)
+      body: JSON.stringify({ ...appointment, customer: customer.id })
     })
     setError(!result.ok)
   }
@@ -204,6 +204,7 @@ export const AppointmentForm = ({
 AppointmentForm.defaultProps = {
   availableTimeSlots: [],
   today: new Date(),
+  customer: { id: 50 },
   salonOpensAt: 9,
   salonClosesAt: 19,
   selectableServices: [
