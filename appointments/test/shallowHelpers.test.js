@@ -1,5 +1,5 @@
 import React from 'react'
-import { childrenOf, createShallowRenderer } from './shallowHelpers'
+import { childrenOf, createShallowRenderer, type } from './shallowHelpers'
 
 // A component to use for shallow rendering
 // Renders children
@@ -7,8 +7,6 @@ const TestComponent = ({ children }) => (
     <React.Fragment>{ children }</React.Fragment>
 )
 
-// Produces a function for finding out if an element is of the given type such as 'p'
-const type = typeName => element => element.type === typeName;
 
 
 describe('childrenOf', () => {

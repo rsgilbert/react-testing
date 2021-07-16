@@ -1,6 +1,19 @@
 import React from 'react'
 import ShallowRenderer from 'react-test-renderer/shallow';
 
+
+// Produces a matcher that relies on element type eg 'p'
+export const type = typeName => element => element.type === typeName;
+
+// Produces a matcher that relies on id property of the element
+export const id = id => element => element.props.id === id;
+
+// Produces a matcher that relies on className property of the element
+export const className = className => element => element.props.className === className;
+
+// Invokes onClick on the element
+export const click = element => element.props.onClick();
+
 // Produces an array of all child elements matching a given filter function
 const elementsMatching = (element, matcherFn) => {
     if(matcherFn(element))
