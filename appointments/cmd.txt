@@ -1,0 +1,2 @@
+// Install test renderer
+npm install --save-dev react-test-renderer
