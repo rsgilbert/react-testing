@@ -2,7 +2,7 @@ import React from 'react'
 import 'whatwg-fetch'
 import { createContainer} from "./domManipulators";
 import { fetchResponseOk} from "./spyHelpers";
-import { AppointmentsDayViewLoader } from "../src/AppointmentDayViewLoader"
+import { AppointmentsDayViewLoader } from "../src/AppointmentsDayViewLoader"
 import * as AppointmentsDayViewExports from "../src/AppointmentsDayView";
 import {render} from "react-dom";
 

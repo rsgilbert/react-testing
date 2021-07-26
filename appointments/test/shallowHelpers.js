@@ -37,13 +37,12 @@ const elementMatching = (element, matcherFn) => {
 }
 
 
+// Module that exposes methods to do with shallow rendering
 export const createShallowRenderer = () => {
     let renderer = new ShallowRenderer();
 
     return {
-        // Returns the nth child
-        child: n => childrenOf(renderer.getRenderOutput())[n],
-
+        element: () => renderer.getRenderOutput(),
         // Produces first matching child
         elementMatching: matcherFn => elementMatching(renderer.getRenderOutput(), matcherFn),
 
@@ -78,6 +77,10 @@ export const childrenOf = element => {
     return [children]
 }
 
+// Returns the nth child
+export const childOf = (element, n) => {
+    return childrenOf(element)[n]
+}
 
 
 // Legacy
