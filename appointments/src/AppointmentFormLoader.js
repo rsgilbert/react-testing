@@ -18,7 +18,7 @@ export const AppointmentFormLoader = props => {
     return (
         <div>
             <AppointmentForm
-                { ...props }
+                { ...props } // <-- including customer
                 availableTimeSlots={availableTimeSlots} />
         </div>
     )

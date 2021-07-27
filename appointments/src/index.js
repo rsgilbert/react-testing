@@ -5,10 +5,10 @@ import {
   sampleAvailableTimeSlots,
   sampleStylists
 } from './sampleData';
+import {App} from "./App";
 
 ReactDOM.render(
-  <AppointmentForm
-    availableTimeSlots={sampleAvailableTimeSlots}
-  />,
+  <App
+    />,
   document.getElementById('root')
 );

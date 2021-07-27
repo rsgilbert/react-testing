@@ -116,7 +116,9 @@ export const AppointmentForm = ({
   salonClosesAt,
   today,
   availableTimeSlots,
-  startsAt, customer
+  startsAt,
+  onSave,
+  customer
 }) => {
   const [appointment, setAppointment] = useState({
     service,
@@ -157,7 +159,8 @@ export const AppointmentForm = ({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...appointment, customer: customer.id })
     })
-    setError(!result.ok)
+    result.ok ? onSave() : setError(!result.ok)
+
   }
 
   return (
