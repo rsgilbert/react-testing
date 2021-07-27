@@ -23,18 +23,6 @@ const elementsMatching = (element, matcherFn) => {
 }
 
 
-// Produces the first child matching a given filter function
-// Exists the moment it finds first child
-const elementMatching = (element, matcherFn) => {
-    let chn = childrenOf(element);
-    for(let i = 0; i < chn.length; i++) {
-        let c = chn[i];
-        if(matcherFn(c)) return c;
-        const nestedMatch = elementMatching(c, matcherFn);
-        if(!!nestedMatch) return nestedMatch;
-    }
-    return null;
-}
 
 
 // Module that exposes methods to do with shallow rendering
@@ -44,7 +32,7 @@ export const createShallowRenderer = () => {
     return {
         element: () => renderer.getRenderOutput(),
         // Produces first matching child
-        elementMatching: matcherFn => elementMatching(renderer.getRenderOutput(), matcherFn),
+        elementMatching: matcherFn => elementsMatching(renderer.getRenderOutput(), matcherFn)[0], // elementMatching(renderer.getRenderOutput(), matcherFn),
 
         // Returns an array of all child elements matching the given matcherFn.
         // matcherFn acts sort-of like a filter. Recursion is used
@@ -102,4 +90,19 @@ const _elementsMatchingMine = (element, matcherFn, els) => {
             _elementsMatchingMine(c, matcherFn, els)
         }
     })
+}
+
+// Deprecated. Not used because its complicated
+// Produces the first child matching a given filter function
+// Exists the moment it finds first child
+const elementMatching = (element, matcherFn) => {
+    let res = elementsMatching(element, matcherFn);
+    let chn = childrenOf(element);
+    for(let i = 0; i < chn.length; i++) {
+        let c = chn[i];
+        if(matcherFn(c)) return c;
+        const nestedMatch = elementMatching(c, matcherFn);
+        if(!!nestedMatch) return nestedMatch;
+    }
+    return null;
 }

@@ -5,16 +5,13 @@ import {
 import { App } from '../src/App';
 import { AppointmentsDayViewLoader } from '../src/AppointmentsDayViewLoader';
 import { CustomerForm } from '../src/CustomerForm';
-
-
-let log = console.log
+import {AppointmentFormLoader} from "../src/AppointmentFormLoader";
 
 describe('App', () => {
     let render, elementMatching, element;
 
     beforeEach(() => {
         ({ render, elementMatching, element } = createShallowRenderer());
-
     });
 
     it('initially shows the AppointmentsDayViewLoader', () => {
@@ -48,12 +45,43 @@ describe('App', () => {
     });
 
     it('hides the AppointmentDayViewLoader when button is clicked', async () => {
-
+        beginAddingCustomerAndAppointment();
+        expect(elementMatching(type(AppointmentsDayViewLoader))).toBeUndefined();
     });
 
+    it('hides the button bar when CustomerForm is being displayed', async () => {
+        beginAddingCustomerAndAppointment();
+        expect(elementMatching(className('button-bar'))).not.toBeTruthy();
+    });
 
+    const saveCustomer = customer =>
+        elementMatching(type(CustomerForm)).props.onSave(customer);
 
+    it('displays the AppointmentFormLoader after the CustomerForm is submitted', async () => {
+        beginAddingCustomerAndAppointment();
+        saveCustomer();
+        expect(elementMatching(type(AppointmentFormLoader))).toBeDefined();
+    })
 
+    it('passes the customer to the AppointmentForm', async () => {
+        const customer = { id: 12 };
+        beginAddingCustomerAndAppointment();
+        saveCustomer(customer);
+        expect(elementMatching(type(AppointmentFormLoader)).props.customer).toBe(customer)
+    });
+
+    const saveAppointment = () => {
+        elementMatching(type(AppointmentFormLoader)).props.onSave();
+    }
+
+    it('renders AppointmentsDayViewLoader after AppointmentForm is submitted', async () => {
+        beginAddingCustomerAndAppointment();
+        saveCustomer();
+        saveAppointment();
+        expect(elementMatching(type(AppointmentsDayViewLoader))).toBeDefined();
+        expect(elementMatching(type(AppointmentFormLoader))).toBeUndefined();
+        expect(elementMatching(type(CustomerForm))).toBeUndefined();
+    })
 
 
 })

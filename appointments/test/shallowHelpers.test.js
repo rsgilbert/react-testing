@@ -138,5 +138,15 @@ describe('elementMatching', () => {
             </TestComponent>
         );
         expect(elementMatching(el => el.type === 'p')).toEqual(<p>A</p>)
-    })
+    });
+
+    it('produces undefined if no child found', () => {
+        render(
+            <TestComponent>
+                <p>A</p>
+                <p>B</p>
+            </TestComponent>
+        );
+        expect(elementMatching(type('div'))).toEqual(undefined)
+    });
 })
