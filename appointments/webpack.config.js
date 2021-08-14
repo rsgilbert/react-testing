@@ -3,6 +3,7 @@ const webpack = require("webpack");
 
 module.exports = {
  mode: "development",
+ watch: true,
  module: {
    rules: [{
      test: /\.(js|jsx)$/,
